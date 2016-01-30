@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta name="viewport" content="width=1280">
+    <meta charset="UTF-8">
+    <title>RoboWebAPI</title>
+    <link href='https://fonts.googleapis.com/css?family=Anonymous+Pro:400,700' rel='stylesheet' type='text/css'>
+    <style>
+
+    body , html {
+      height: 100%;
+      background: #000000;
+      color: #FFFFFF;
+    }
+ 
+    button {
+      height: 120px;
+      width: 90%;
+      border-radius: 20px;
+      border:8px solid #cfdcec;
+      
+      background: #FFFFFF; 
+      box-shadow: 0 0 3px gray;
+      text-align:center;
+      color:#000000;
+      font-size:1em;
+      font-weight:bold;
+      text-decoration:none;
+    }
+
+    #container {
+        width: 100%;
+        position: relative;
+        height: auto !important;
+        height: 100%;
+        min-height: 100%;
+    }
+     
+     
+    #footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 50px;
+    }
+
+    .dummy {
+      height: 160px;
+    }
+
+    #client_token {
+      font-family: 'Anonymous Pro';
+    }
+    </style>
+    <script src="/libs/qimessaging/1.0/qimessaging.js"></script>
+    <script>
+      var session = new QiSession();
+      
+      function valueEndpointURLHandler(value) {
+        session.service("ALMemory").done(function (ALMemory) {
+          ALMemory.getData("org.robowebapi/ui/endpointURL").done(function(value) {
+            document.getElementById("server_address").value = value; 
+          });
+        });
+      }
+
+      function valueClient_tokenHandler(value) {
+        session.service("ALMemory").done(function (ALMemory) {
+          ALMemory.getData("org.robowebapi/ui/client_token").done(function(value) {
+            document.getElementById("client_token").innerHTML = value; 
+          });
+        });
+      }
+
+      function messageHandler(value) {
+        console.log(value);
+        document.getElementById("message").innerHTML = value; 
+      }
+
+      function showButtonHandler(value) {
+        if (value == "init")
+        {
+            console.log("show init buttons");
+            document.getElementById("button1").style.display = "block"; 
+            document.getElementById("button2").style.display = "none"; 
+            document.getElementById("button3").style.display = "block"; 
+            document.getElementById("dummy1").style.display = "none"; 
+            document.getElementById("dummy2").style.display = "none"; 
+        } 
+        else if (value == "ready")
+        {
+            console.log("show close buttons");
+            document.getElementById("button1").style.display = "none"; 
+            document.getElementById("button2").style.display = "block"; 
+            document.getElementById("button3").style.display = "block"; 
+            document.getElementById("dummy1").style.display = "none"; 
+            document.getElementById("dummy2").style.display = "none"; 
+        } 
+        else if (value == "hide")
+        {
+            console.log("hide buttons");
+            document.getElementById("button1").style.display = "none"; 
+            document.getElementById("button2").style.display = "none"; 
+            document.getElementById("button3").style.display = "none"; 
+            document.getElementById("dummy1").style.display = "block"; 
+            document.getElementById("dummy2").style.display = "block"; 
+        }
+      }
+      
+      function init() {
+        session.service("ALMemory").done(function (ALMemory) {
+          ALMemory.getData("org.robowebapi/ui/endpointURL").done(function(value) {
+            document.getElementById("server_address").value = value; 
+          });
+
+          ALMemory.getData("org.robowebapi/ui/client_token").done(function(value) {
+            document.getElementById("client_token").innerHTML = value; 
+          });
+
+          ALMemory.getData("org.robowebapi/ui/tablet_showButton").done(function(value) {
+            showButtonHandler(value);
+          });
+
+          ALMemory.subscriber("org.robowebapi/ui/endpointURL").done(function(subscriber) {
+            subscriber.signal.connect(valueEndpointURLHandler);
+          });
+
+          ALMemory.subscriber("org.robowebapi/ui/client_token").done(function(subscriber) {
+            subscriber.signal.connect(valueClient_tokenHandler);
+          });
+
+          ALMemory.subscriber("org.robowebapi/ui/tablet_message").done(function(subscriber) {
+            subscriber.signal.connect(messageHandler);
+          });
+
+          ALMemory.subscriber("org.robowebapi/ui/tablet_showButton").done(function(subscriber) {
+            subscriber.signal.connect(showButtonHandler);
+          });
+
+        });
+      }
+
+      function connect() {
+        session.service("ALMemory").done(function (ALMemory) {
+          ALMemory.raiseEvent("org.robowebapi/ui/register", document.getElementById("server_address").value);
+        });
+      }
+
+      function closeui() {
+        session.service("ALMemory").done(function (ALMemory) {
+          ALMemory.raiseEvent("org.robowebapi/ui/close", document.getElementById("server_address").value);
+        });
+      }
+
+      function reset() {
+        session.service("ALMemory").done(function (ALMemory) {
+          ALMemory.raiseEvent("org.robowebapi/ui/reset", "1");
+        });
+      }
+    </script>
+  </head>
+  <body onLoad="init();">
+  <div id="container" >
+    <div style="font-size: 3em;" align=center>
+      <table border="0" >
+        <tr><td style="font-size:2em">&nbsp; </td></tr>
+        <tr>
+          <td>サーバー</td><td>：</td><td><input id="server_address" type="text" style="font-size: 1em" value="http://" ></td> 
+        </tr>
+          <td>クライアントトークン</td><td>：</td><td><span id="client_token">未取得</span></td>
+        </tr>
+        <tr><td colspan="3"><span id="message" style="color:#e20000;">&nbsp;</span></td></tr>
+        <tr><td>&nbsp; </td></tr>
+        <tr>
+          <td colspan="3" align="center" height="150%">
+            <button type="button" id="button1" onclick="connect();" style="display:none;" >接続</button>
+            <button type="button" id="button2" onclick="closeui();">閉じる</button>
+            <span class="dummy" id="dummy1" style="display:none;">&nbsp;</span>
+          </td>
+        </tr>
+        <tr><td style="font-size:0.4em">&nbsp;</td></tr>
+        <tr>
+          <td colspan="3" align="center" height="150%">
+            <button type="button" id="button3" onclick="reset();">接続情報リセット</button>
+            <span class="dummy" id="dummy2" style="display:none;">&nbsp;</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <footer id="footer">
+      <div style="float:right">
+        <span style="font-size: 1em;align=right">Powered by RoboWebAPI project&nbsp;&nbsp;&nbsp;</span>
+      </div>
+    </footer>
+  </div>
+  </body>
+</html>
