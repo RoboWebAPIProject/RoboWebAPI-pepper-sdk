@@ -15,19 +15,17 @@
         <File name="dependency_links" src="lib/paho_mqtt-1.1-py2.7.egg-info/dependency_links.txt" />
         <File name="installed-files" src="lib/paho_mqtt-1.1-py2.7.egg-info/installed-files.txt" />
         <File name="top_level" src="lib/paho_mqtt-1.1-py2.7.egg-info/top_level.txt" />
-        <File name="lnetatmo" src="lib/lnetatmo.py" />
-        <File name="printAllLastData" src="lib/printAllLastData.py" />
         <File name="index" src="html/init_robowebapi.html" />
         <File name="button57" src="init/button57.mp3" />
         <File name="icon" src="icon.png" />
     </Resources>
     <Topics />
     <IgnoredPaths>
-        <Path src="html/.DS_Store" />
+        <Path src="lib/paho_mqtt-1" />
         <Path src="lib/paho_mqtt-1.1-py2.7" />
         <Path src="lib/paho_mqtt-1.1-py2" />
         <Path src=".metadata" />
-        <Path src="lib/paho_mqtt-1" />
         <Path src=".DS_Store" />
+        <Path src="html/.DS_Store" />
     </IgnoredPaths>
 </Package>

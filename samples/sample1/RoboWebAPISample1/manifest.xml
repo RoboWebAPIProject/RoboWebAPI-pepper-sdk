@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<package uuid="robowebapisample1" version="0.0.1">
+<package version="0.0.1" uuid="robowebapisample1">
  <names>
   <name lang="en_US">RoboWebAPISample1</name>
  </names>
@@ -15,9 +15,6 @@
   <behaviorContent path="init">
    <userRequestable/>
    <nature>interactive</nature>
-   <triggerSentences/>
-   <loadingResponses/>
-   <autonomous/>
    <permissions/>
   </behaviorContent>
  </contents>
