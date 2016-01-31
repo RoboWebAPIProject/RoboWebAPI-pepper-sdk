@@ -38,34 +38,38 @@ var app = express();
 app.use(bodyParser())
 
 app.post(speechreco_webhook_path, function (req, res) {
-    console.log("callback called");
-     console.log(req.body);
-   
-    if ("value" in body && body.value.length >= 1)
+    console.log(req.body);
+    if ("value" in req.body && req.body.value.length >= 1)
     {
-        word = body.value[0][0];
-        confidence = body.value[0][1];
+        word = req.body.value[0];
+        confidence = req.body.value[1];
 
 
         if (confidence > 0.4)
         {
             if (word == "いぬ")
             {
-
+                console.log("いぬが好き");
             }
-            else if (work == "ねこ")
+            else if (word == "ねこ")
             {
-
+                console.log("ねこが好き");
             }
+    
+            //音声認識を止める
+            request({
+                url: call_url, method: "POST",json: true,headers: {"content-type": "application/json",},
+                json: { 
+                    module: 'ALSpeechRecognition', method: 'unsubscribe',
+                    params: ['reco1'], // <-- reco1 は音声認識セッションの識別子。subscribe の時の文字列と一致させる
+                    module_id: 1}
+            },function (err, res, body) {
+                console.log(body);
+                //終了
+                process.exit();
+                });
         }
-    //音声認識を止める
-    request({
-        url: call_url, method: "POST",json: true,headers: {"content-type": "application/json",},
-        json: { 
-            module: 'ALSpeechRecognition', method: 'unsubscribe',
-            params: ['reco1'], // <-- reco1 は音声認識セッションの識別子。subscribe の時の文字列と一致させる
-            module_id: 1}
-    },function (err, res, body) {console.log(body);});
+    }
 
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.end("OK");                 
