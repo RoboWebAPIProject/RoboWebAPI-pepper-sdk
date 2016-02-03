@@ -1,5 +1,5 @@
 {
-  "name": "02_listen_and_response",
+  "name": "03_listen_and_response",
   "version": "0.0.1",
   "description": "",
   "main": "ListenAndResponse.js",
@@ -9,6 +9,7 @@
   "author": "Takuji Kawata",
   "license": "MIT",
   "devDependencies": {
+    "async": "^1.5.2",
     "body-parser": "^1.14.2",
     "express": "^4.13.4",
     "request": "^2.69.0"

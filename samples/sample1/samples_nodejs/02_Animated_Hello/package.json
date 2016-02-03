@@ -1,0 +1,15 @@
+{
+  "name": "02_AnimatedHello",
+  "version": "0.0.1",
+  "description": "",
+  "main": "AnimatedHello.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Takuji Kawata",
+  "license": "MIT",
+  "devDependencies": {
+    "async": "^1.5.2",
+    "request": "^2.69.0"
+  }
+}
