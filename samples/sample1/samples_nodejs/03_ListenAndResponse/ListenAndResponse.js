@@ -6,7 +6,7 @@ if (process.argv.length < 4)
 {
     console.log("Error!");
     console.log(" missing argument.");
-    console.log(" node ListenAndResponse.js <robowebapi sever> <client_token>");
+    console.log(" node ListenAndResponse.js <robowebapi sever> <client_token> [<local IP address>]");
     console.log("");
     return;
 }
@@ -20,16 +20,23 @@ var async               = require('async');
 var ifaces = os.networkInterfaces();
 var localIpAddress;
 
-// Find local IP address
-for (var dev in ifaces) {
+if (process.argv.length < 5)
+{
+    // Find local IP address
+    for (var dev in ifaces) {
 
-    var iface = ifaces[dev].filter(function(details) {
-        return details.family === 'IPv4' && details.internal === false;
-    });
+        var iface = ifaces[dev].filter(function(details) {
+            return details.family === 'IPv4' && details.internal === false;
+        });
 
-    if(iface.length > 0) localIpAddress = iface[0].address;
+        if(iface.length > 0) localIpAddress = iface[0].address;
+    }
 }
-
+else 
+{
+    localIpAddress = rocess.argv[4];
+}
+console.log("local IP address for webhook:" + localIpAddress);
 var call_url = process.argv[2].trim() + "/call/" + process.argv[3].trim();
 var addWebhook_baseUrl = process.argv[2].trim() + "/addWebhook/" + process.argv[3].trim();
 var callback_url = "http://" + localIpAddress + ":" + String(server_port) + speechreco_webhook_path;
