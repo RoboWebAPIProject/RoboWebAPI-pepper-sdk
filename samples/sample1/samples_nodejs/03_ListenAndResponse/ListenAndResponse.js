@@ -34,7 +34,7 @@ if (process.argv.length < 5)
 }
 else 
 {
-    localIpAddress = rocess.argv[4];
+    localIpAddress = process.argv[4];
 }
 console.log("local IP address for webhook:" + localIpAddress);
 var call_url = process.argv[2].trim() + "/call/" + process.argv[3].trim();
